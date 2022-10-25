@@ -42,16 +42,65 @@ console.log('array of employee data: ',  employees );
 
 // This is not a race. Everyone on your team should understand what is happening.
 // Ask questions when you don't.
+let employeeBonusList = [];
+for (let employee of employees ) {
+  // console.log( employee );
+  console.log('return from bonus calc',bonusCalc (employee )); //return from bonus clac
+  employeeBonusList.push(employee)
+} //end for loop
+
+console.log('Total list of bonus details:', employeeBonusList);
 
 
 
 
-// This function will calculate 1 employee's bonus!
-//
-function calculateIndividualEmployeeBonus( employee ) {  
-  // your logic here
+
+
+
+
+
+function bonusCalc ( arg ) {
+  let bonusDetails = {
+    name: arg.name,
+    bonusPercentage: 0,
+    totalBonus: 0,
+    totalCompensation: 0,
+
+  }
+  let salary = parseInt (arg.annualSalary);
+ //console.log( 'in bonusCalc, checkling bonusDetails object: ', bonusDetails)   
+  if(arg.reviewRating <= 2){
+    bonusDetails.bonusPercentage = 0;
+    bonusDetails.totalBonus = 0; 
+  }else if(arg.reviewRating == 3){
+    bonusDetails.bonusPercentage = .04;
+    bonusDetails.totalBonus = bonusDetails.bonusPercentage * arg.annualSalary;
+  }else if(arg.reviewRating == 4){
+    bonusDetails.bonusPercentage = .06;
+    bonusDetails.totalBonus = bonusDetails.bonusPercentage * arg.annualSalary;
+  }else if(arg.reviewRating == 5){
+    bonusDetails.bonusPercentage = .1;
+    bonusDetails.totalBonus = bonusDetails.bonusPercentage * arg.annualSalary;
+  }
+
+  if(arg.employeeNumber.length < 5){ //checking if employee# is less than 5 digits, adding 5% bonus
+    bonusDetails.bonusPercentage += .05;
+    //console.log('yes', bonusDetails.totalBonus);
+
+  }
+
+  if (arg.annualSalary > 65000 && bonusDetails.bonusPercentage > 0) { // reducing bonus percentage by 1 if over 65k salary
+    console.log( bonusDetails.bonusPercentage );
+    bonusDetails.bonusPercentage = Math.round((bonusDetails.bonusPercentage - .01) * 100) / 10;
+    // console.log('in above 65k, testing', bonusDetails.bonusPercentage );
+  }
   
-  
-  // return new object with bonus results
+  // console.log('maxbonus', maxBonus);
+  if (bonusDetails.bonusPercentage > .13 ) {
+    bonusDetails.bonusPercentage = .13;
+  }
 
+  bonusDetails.totalCompensation = Math.round(salary * bonusDetails.bonusPercentage + salary);
+  
+  return bonusDetails;
 }
